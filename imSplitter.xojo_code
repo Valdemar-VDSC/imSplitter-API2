@@ -1,9 +1,9 @@
 #tag Class
 Protected Class imSplitter
-Inherits Canvas
+Inherits DesktopCanvas
 	#tag CompatibilityFlags = TargetHasGUI
 	#tag Event
-		Sub DoubleClick(X As Integer, Y As Integer)
+		Sub DoublePressed(x As Integer, y As Integer)
 		  If Me.IsDocked Then
 		    If DoubleClickAction > 0 Then
 		      Undock
@@ -22,12 +22,12 @@ Inherits Canvas
 		    End Select
 		  End If
 		  
-		  DoubleClick(X,Y)
+		  DoublePressed(X,Y)
 		End Sub
 	#tag EndEvent
 
 	#tag Event
-		Function MouseDown(X As Integer, Y As Integer) As Boolean
+		Function MouseDown(x As Integer, y As Integer) As Boolean
 		  Me.lastX = System.MouseX
 		  Me.lastY = System.MouseY
 		  
@@ -42,14 +42,14 @@ Inherits Canvas
 	#tag EndEvent
 
 	#tag Event
-		Sub MouseDrag(X As Integer, Y As Integer)
+		Sub MouseDrag(x As Integer, y As Integer)
 		  MoveSplitter
 		  'MouseDrag(X,Y)
 		End Sub
 	#tag EndEvent
 
 	#tag Event
-		Sub MouseUp(X As Integer, Y As Integer)
+		Sub MouseUp(x As Integer, y As Integer)
 		  // If splitter is not already docked, then:
 		  // Check if splitter is in docking range
 		  // See: DockBeforeSize, DockAfterSize
@@ -90,7 +90,7 @@ Inherits Canvas
 	#tag EndEvent
 
 	#tag Event
-		Sub Open()
+		Sub Opening()
 		  If Me.Width > Me.Height Then
 		    Me.MouseCursor = System.Cursors.SplitterNorthSouth
 		    Me.IsHorizontalSplitter = True
@@ -104,14 +104,14 @@ Inherits Canvas
 		  // Keep Track of Splitterdocking position
 		  mIsDockedPosition = imSplitterIs.UnDocked
 		  
-		  Open
+		  Opening
 		  
 		  
 		End Sub
 	#tag EndEvent
 
 	#tag Event
-		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
+		Sub Paint(g As Graphics, areas() As Rect)
 		  If Me.HasBackColor Then
 		    g.ForeColor=Me.SplitterColor
 		    g.FillRect(0,0,Me.Width,Me.Height)
@@ -155,45 +155,45 @@ Inherits Canvas
 
 
 	#tag Method, Flags = &h0
-		Sub AddControl(ctrl As ContainerControl, beforeSplitter As Boolean)
+		Sub AddControl(ctrl As DesktopContainer, beforeSplitter As Boolean)
 		  If beforeSplitter Then  // Left or above splitter
-		    CtrlArrayBefore.Append ctrl
+		    CtrlArrayBefore.Add ctrl
 		  Else
-		    CtrlArrayAfter.Append ctrl
+		    CtrlArrayAfter.Add ctrl
 		  End If
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddControl(ctrl As Control, beforeSplitter As Boolean)
+		Sub AddControl(ctrl As DesktopUIControl, beforeSplitter As Boolean)
 		  // TODO: Check if the control is already there...
 		  
 		  If beforeSplitter Then  // Left or above splitter
-		    CtrlArrayBefore.Append ctrl
+		    CtrlArrayBefore.Add ctrl
 		  Else
-		    CtrlArrayAfter.Append ctrl
+		    CtrlArrayAfter.Add ctrl
 		  End If
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddControlNoResize(ctrl As ContainerControl, beforeSplitter As Boolean)
+		Sub AddControlNoResize(ctrl As DesktopContainer, beforeSplitter As Boolean)
 		  If beforeSplitter Then  // Left or above splitter
-		    CtrlArrayBeforeNoResize.Append ctrl
+		    CtrlArrayBeforeNoResize.Add ctrl
 		  Else
-		    CtrlArrayAfterNoResize.Append ctrl
+		    CtrlArrayAfterNoResize.Add ctrl
 		  End If
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddControlNoResize(ctrl As Control, beforeSplitter As Boolean)
+		Sub AddControlNoResize(ctrl As DesktopUIControl, beforeSplitter As Boolean)
 		  // TODO: Check if the control is already there...
 		  
 		  If beforeSplitter Then  // Left or above splitter
-		    CtrlArrayBeforeNoResize.Append ctrl
+		    CtrlArrayBeforeNoResize.Add ctrl
 		  Else
-		    CtrlArrayAfterNoResize.Append ctrl
+		    CtrlArrayAfterNoResize.Add ctrl
 		  End If
 		End Sub
 	#tag EndMethod
@@ -201,7 +201,7 @@ Inherits Canvas
 	#tag Method, Flags = &h21
 		Private Sub AdjustControlsAfter(dx As Integer, dy As Integer)
 		  // ***************************************************************
-		  // RESIZE CONTROLS and/or ContainerControls which are
+		  // RESIZE CONTROLS and/or DesktopUIControls which are
 		  // added on the RIGHT of vertical splitter
 		  // or BELOW of horizontal splitter
 		  
@@ -210,25 +210,25 @@ Inherits Canvas
 		  For i = 0 To UBound(CtrlArrayAfter)
 		    If IsHorizontalSplitter Then
 		      
-		      If Me.CtrlArrayAfter(i) IsA RectControl Then
-		        RectControl(CtrlArrayAfter(i)).Top = RectControl(CtrlArrayAfter(i)).Top + dy
-		        RectControl(CtrlArrayAfter(i)).Height = RectControl(CtrlArrayAfter(i)).Height - dy
+		      If Me.CtrlArrayAfter(i) IsA DesktopContainer Then
+		        DesktopContainer(CtrlArrayAfter(i)).Top = DesktopContainer(CtrlArrayAfter(i)).Top + dy
+		        DesktopContainer(CtrlArrayAfter(i)).Height = DesktopContainer(CtrlArrayAfter(i)).Height - dy
 		        
 		      Else
-		        ContainerControl(CtrlArrayAfter(i)).Top = ContainerControl(CtrlArrayAfter(i)).Top + dy
-		        ContainerControl(CtrlArrayAfter(i)).Height = ContainerControl(CtrlArrayAfter(i)).Height - dy
+		        DesktopUIControl(CtrlArrayAfter(i)).Top = DesktopUIControl(CtrlArrayAfter(i)).Top + dy
+		        DesktopUIControl(CtrlArrayAfter(i)).Height = DesktopUIControl(CtrlArrayAfter(i)).Height - dy
 		        
 		      End If
 		      
 		    Else // If Vertical splitter
 		      
-		      If Me.CtrlArrayAfter(i) IsA RectControl Then
-		        RectControl(CtrlArrayAfter(i)).Left = RectControl(CtrlArrayAfter(i)).Left + dx
-		        RectControl(CtrlArrayAfter(i)).Width = RectControl(CtrlArrayAfter(i)).Width - dx
+		      If Me.CtrlArrayAfter(i) IsA DesktopContainer Then
+		        DesktopContainer(CtrlArrayAfter(i)).Left = DesktopContainer(CtrlArrayAfter(i)).Left + dx
+		        DesktopContainer(CtrlArrayAfter(i)).Width = DesktopContainer(CtrlArrayAfter(i)).Width - dx
 		        
 		      Else
-		        ContainerControl(CtrlArrayAfter(i)).Left = ContainerControl(CtrlArrayAfter(i)).Left + dx
-		        ContainerControl(CtrlArrayAfter(i)).Width = ContainerControl(CtrlArrayAfter(i)).Width - dx
+		        DesktopUIControl(CtrlArrayAfter(i)).Left = DesktopUIControl(CtrlArrayAfter(i)).Left + dx
+		        DesktopUIControl(CtrlArrayAfter(i)).Width = DesktopUIControl(CtrlArrayAfter(i)).Width - dx
 		        
 		      End If
 		      
@@ -242,7 +242,7 @@ Inherits Canvas
 	#tag Method, Flags = &h21
 		Private Sub AdjustControlsAfterNoResize(dx As Integer, dy As Integer)
 		  // ***************************************************************
-		  // REPOSITION CONTROLS and/or ContainerControls which are
+		  // REPOSITION CONTROLS and/or DesktopUIControls which are
 		  // added on the RIGHT of vertical splitter
 		  // or BELOW of horizontal splitter
 		  
@@ -251,21 +251,21 @@ Inherits Canvas
 		  For i = 0 To UBound(CtrlArrayAfterNoResize)
 		    If Me.IsHorizontalSplitter Then
 		      
-		      If Me.CtrlArrayAfterNoResize(i) IsA RectControl Then
-		        RectControl(CtrlArrayAfterNoResize(i)).Top = RectControl(CtrlArrayAfterNoResize(i)).Top + dy
+		      If Me.CtrlArrayAfterNoResize(i) IsA DesktopContainer Then
+		        DesktopContainer(CtrlArrayAfterNoResize(i)).Top = DesktopContainer(CtrlArrayAfterNoResize(i)).Top + dy
 		        
 		      Else
-		        ContainerControl(CtrlArrayAfterNoResize(i)).Top = ContainerControl(CtrlArrayAfterNoResize(i)).Top + dy
+		        DesktopUIControl(CtrlArrayAfterNoResize(i)).Top = DesktopUIControl(CtrlArrayAfterNoResize(i)).Top + dy
 		        
 		      End If
 		      
 		    Else // If Vertical splitter
 		      
-		      If Me.CtrlArrayAfterNoResize(i) IsA RectControl Then
-		        RectControl(CtrlArrayAfterNoResize(i)).Left = RectControl(CtrlArrayAfterNoResize(i)).Left + dx
+		      If Me.CtrlArrayAfterNoResize(i) IsA DesktopContainer Then
+		        DesktopContainer(CtrlArrayAfterNoResize(i)).Left = DesktopContainer(CtrlArrayAfterNoResize(i)).Left + dx
 		        
 		      Else
-		        ContainerControl(CtrlArrayAfterNoResize(i)).Left = ContainerControl(CtrlArrayAfterNoResize(i)).Left + dx
+		        DesktopUIControl(CtrlArrayAfterNoResize(i)).Left = DesktopUIControl(CtrlArrayAfterNoResize(i)).Left + dx
 		      End If
 		      
 		    End If
@@ -278,7 +278,7 @@ Inherits Canvas
 	#tag Method, Flags = &h21
 		Private Sub AdjustControlsBefore(dx As Integer, dy As Integer)
 		  // ***************************************************************
-		  // RESIZE CONTROLS and/or ContainerControls which are
+		  // RESIZE CONTROLS and/or DesktopUIControls which are
 		  // added on the LEFT of vertical splitter
 		  // or ABOVE of horizontal splitter
 		  // ***************************************************************
@@ -288,21 +288,21 @@ Inherits Canvas
 		  For i = 0 To UBound(CtrlArrayBefore)
 		    If IsHorizontalSplitter Then
 		      
-		      If Me.CtrlArrayBefore(i) IsA RectControl Then
-		        RectControl(CtrlArrayBefore(i)).Height = RectControl(CtrlArrayBefore(i)).Height + dy
+		      If Me.CtrlArrayBefore(i) IsA DesktopContainer Then
+		        DesktopContainer(CtrlArrayBefore(i)).Height = DesktopContainer(CtrlArrayBefore(i)).Height + dy
 		        
 		      Else
-		        ContainerControl(CtrlArrayBefore(i)).Height = ContainerControl(CtrlArrayBefore(i)).Height + dy
+		        DesktopUIControl(CtrlArrayBefore(i)).Height = DesktopUIControl(CtrlArrayBefore(i)).Height + dy
 		        
 		      End If
 		      
 		    Else // If Vertical splitter
 		      
-		      If Me.CtrlArrayBefore(i) IsA RectControl Then
-		        RectControl(CtrlArrayBefore(i)).Width = RectControl(CtrlArrayBefore(i)).Width + dx
+		      If Me.CtrlArrayBefore(i) IsA DesktopContainer Then
+		        DesktopContainer(CtrlArrayBefore(i)).Width = DesktopContainer(CtrlArrayBefore(i)).Width + dx
 		        
 		      Else
-		        ContainerControl(CtrlArrayBefore(i)).Width = ContainerControl(CtrlArrayBefore(i)).Width + dx
+		        DesktopUIControl(CtrlArrayBefore(i)).Width = DesktopUIControl(CtrlArrayBefore(i)).Width + dx
 		        
 		      End If
 		      
@@ -319,27 +319,27 @@ Inherits Canvas
 		  Dim i As Integer
 		  
 		  // ***************************************************************
-		  // REPOSITION CONTROLS and/or ContainerControls which are
+		  // REPOSITION CONTROLS and/or DesktopUIControls which are
 		  // added on the LEFT of vertical splitter
 		  // or on TOP of horizontal splitter
 		  
 		  For i = 0 To UBound(CtrlArrayBeforeNoResize)
 		    If IsHorizontalSplitter Then
 		      
-		      If Me.CtrlArrayBeforeNoResize(i) IsA RectControl Then
-		        RectControl(CtrlArrayBeforeNoResize(i)).Top = RectControl(CtrlArrayBeforeNoResize(i)).Top + dy
+		      If Me.CtrlArrayBeforeNoResize(i) IsA DesktopContainer Then
+		        DesktopContainer(CtrlArrayBeforeNoResize(i)).Top = DesktopContainer(CtrlArrayBeforeNoResize(i)).Top + dy
 		        
-		      Elseif Me.CtrlArrayBeforeNoResize(i) IsA ContainerControl Then
-		        ContainerControl(CtrlArrayBeforeNoResize(i)).Top = ContainerControl(CtrlArrayBeforeNoResize(i)).Top + dy
+		      Elseif Me.CtrlArrayBeforeNoResize(i) IsA DesktopUIControl Then
+		        DesktopUIControl(CtrlArrayBeforeNoResize(i)).Top = DesktopUIControl(CtrlArrayBeforeNoResize(i)).Top + dy
 		      End If
 		      
 		    Else // Is Vertical splitter
 		      
-		      If Me.CtrlArrayBeforeNoResize(i) IsA RectControl Then
-		        RectControl(Me.CtrlArrayBeforeNoResize(i)).Left = RectControl(CtrlArrayBeforeNoResize(i)).Left + dx
+		      If Me.CtrlArrayBeforeNoResize(i) IsA DesktopContainer Then
+		        DesktopContainer(Me.CtrlArrayBeforeNoResize(i)).Left = DesktopContainer(CtrlArrayBeforeNoResize(i)).Left + dx
 		        
-		      Elseif Me.CtrlArrayBeforeNoResize(i) IsA ContainerControl Then
-		        ContainerControl(CtrlArrayBeforeNoResize(i)).Left = ContainerControl(CtrlArrayBeforeNoResize(i)).Left + dx
+		      Elseif Me.CtrlArrayBeforeNoResize(i) IsA DesktopUIControl Then
+		        DesktopUIControl(CtrlArrayBeforeNoResize(i)).Left = DesktopUIControl(CtrlArrayBeforeNoResize(i)).Left + dx
 		      End If
 		      
 		    End If
@@ -552,18 +552,18 @@ Inherits Canvas
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub RemoveControl(ctrl As ContainerControl)
+		Sub RemoveControl(ctrl As DesktopContainer)
 		  Dim  ctrlFound As Boolean = False
 		  Dim  CtrlArray() As Object
 		  
 		  For i As Integer = 0 To UBound(CtrlArrayAfter)
-		    If Me.CtrlArrayAfter(i) IsA ContainerControl Then
-		      If ContainerControl(CtrlArrayAfter(i)) = ctrl Then
+		    If Me.CtrlArrayAfter(i) IsA DesktopContainer Then
+		      If DesktopContainer(CtrlArrayAfter(i)) = DesktopContainer(ctrl) Then
 		        ctrlFound = True
 		      Else
 		        CtrlArray.Append Me.CtrlArrayAfter(i)
 		      End If
-		    Else  // Append RectControl
+		    Else  // Append DesktopUIControls
 		      CtrlArray.Append Me.CtrlArrayAfter(i)
 		    End If
 		  Next
@@ -578,13 +578,13 @@ Inherits Canvas
 		    ReDim CtrlArray(-1)
 		    
 		    For i As Integer = 0 To UBound(CtrlArrayBefore)
-		      If Me.CtrlArrayBefore(i) IsA ContainerControl Then
-		        If ContainerControl(CtrlArrayBefore(i)) = ctrl Then
+		      If Me.CtrlArrayBefore(i) IsA DesktopContainer Then
+		        If DesktopContainer(CtrlArrayBefore(i)) = DesktopContainer(ctrl) Then
 		          ctrlFound = True
 		        Else
 		          CtrlArray.Append Me.CtrlArrayBefore(i)
 		        End If
-		      Else  // Append RectControl
+		      Else  // Append DesktopUIControls
 		        CtrlArray.Append Me.CtrlArrayBefore(i)
 		      End If
 		    Next
@@ -601,18 +601,18 @@ Inherits Canvas
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub RemoveControl(ctrl As Control)
+		Sub RemoveControl(ctrl As DesktopUIControl)
 		  Dim  ctrlFound As Boolean = False
 		  Dim  CtrlArray() As Object
 		  
 		  For i As Integer = 0 To UBound(CtrlArrayAfter)
-		    If Me.CtrlArrayAfter(i) IsA RectControl Then
-		      If RectControl(CtrlArrayAfter(i)) = RectControl(ctrl) Then
+		    If Me.CtrlArrayAfter(i) IsA DesktopUIControl Then
+		      If DesktopUIControl(CtrlArrayAfter(i)) = ctrl Then
 		        ctrlFound = True
 		      Else
 		        CtrlArray.Append Me.CtrlArrayAfter(i)
 		      End If
-		    Else  // Append ContainerControls
+		    Else  // Append DesktopContainer
 		      CtrlArray.Append Me.CtrlArrayAfter(i)
 		    End If
 		  Next
@@ -627,13 +627,13 @@ Inherits Canvas
 		    ReDim CtrlArray(-1)
 		    
 		    For i As Integer = 0 To UBound(CtrlArrayBefore)
-		      If Me.CtrlArrayBefore(i) IsA RectControl Then
-		        If RectControl(CtrlArrayBefore(i)) = RectControl(ctrl) Then
+		      If Me.CtrlArrayBefore(i) IsA DesktopUIControl Then
+		        If DesktopUIControl(CtrlArrayBefore(i)) = ctrl Then
 		          ctrlFound = True
 		        Else
 		          CtrlArray.Append Me.CtrlArrayBefore(i)
 		        End If
-		      Else  // Append ContainerControls
+		      Else  // Append DesktopContainer
 		        CtrlArray.Append Me.CtrlArrayBefore(i)
 		      End If
 		    Next
@@ -712,7 +712,7 @@ Inherits Canvas
 	#tag EndHook
 
 	#tag Hook, Flags = &h0
-		Event DoubleClick(X As Integer, Y As Integer)
+		Event DoublePressed(X As Integer, Y As Integer)
 	#tag EndHook
 
 	#tag Hook, Flags = &h0
@@ -728,7 +728,7 @@ Inherits Canvas
 	#tag EndHook
 
 	#tag Hook, Flags = &h0
-		Event Open()
+		Event Opening()
 	#tag EndHook
 
 	#tag Hook, Flags = &h0
@@ -748,8 +748,8 @@ Inherits Canvas
 		QuickStart:
 		
 		- Drag imSplitter.obj to your projects folder
-		- From ProjectControls, drag imSplitter to your Window or ContainerControl
-		- Move it to its position between Controls or ContainerControls and
+		- From ProjectControls, drag imSplitter to your Window or DesktopUIControl
+		- Move it to its position between Controls or DesktopUIControls and
 		- Resize it accordingly.
 		- Set its properties in the property Editor
 		- In its open eventhandler, use methods
@@ -797,7 +797,7 @@ Inherits Canvas
 		MinAfterArea As Integer
 		    Defines Docking Area:
 		    Distance measured from the RIGHT or BOTTOM edge of
-		    the splitter's parent Window or ContainerControl.
+		    the splitter's parent Window or DesktopUIControl.
 		
 		    VerticalSplitter:
 		    When Docking, then Splitter.Left is set to MinAfterArea
@@ -809,7 +809,7 @@ Inherits Canvas
 		MinBeforeArea As Integer
 		    Defines Docking Area:
 		    Distance measured from the LEFT or TOP edge of
-		    the splitter's parent Window or ContainerControl.
+		    the splitter's parent Window or DesktopUIControl.
 		
 		    VerticalSplitter:
 		    When Docking, then Splitter.Left is set to MinBeforeArea
@@ -835,12 +835,12 @@ Inherits Canvas
 		
 		Methods:
 		========
-		AddControl(ContainerControl, Boolean)
+		AddControl(DesktopUIControl, Boolean)
 		AddControl(Control, Boolean)
-		AddControlNoResize(ContainerControl, Boolean)
+		AddControlNoResize(DesktopUIControl, Boolean)
 		AddControlNoResize(Control, Boolean)
 		
-		  Parameters: - Name of a Control or ContainerControl Instance
+		  Parameters: - Name of a Control or DesktopUIControl Instance
 		              - before As Boolean
 		                  True = Object is on the Left or on Top of the Splitter
 		                  False = Object is on the Right or at the Bottom of the Splitter
@@ -849,7 +849,7 @@ Inherits Canvas
 		    me.AddControl(Listbox1,True)
 		    me.AddControl(Listbox2,False)
 		    me.AddControl(imSplitter2,False)
-		    me.AddControl(ContainerControl11,False)
+		    me.AddControl(DesktopUIControl11,False)
 		    me.AddControlNoResize(Listbox3,False)
 		    me.AddControlNoResize(imSplitter3,False)
 		  
@@ -907,7 +907,7 @@ Inherits Canvas
 	#tag EndNote
 
 
-	#tag Property, Flags = &h21
+	#tag Property, Flags = &h21, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		Private CtrlArrayAfter() As Object
 	#tag EndProperty
 
@@ -1065,11 +1065,11 @@ Inherits Canvas
 		Private mPositionBeforeDock As Integer = 100
 	#tag EndProperty
 
-	#tag Property, Flags = &h21
+	#tag Property, Flags = &h21, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		Private mSplitterColor As Color = &cC0C0C0
 	#tag EndProperty
 
-	#tag ComputedProperty, Flags = &h0
+	#tag ComputedProperty, Flags = &h0, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		#tag Getter
 			Get
 			  Return mPositionBeforeDock
@@ -1107,30 +1107,52 @@ Inherits Canvas
 
 	#tag ViewBehavior
 		#tag ViewProperty
-			Name="AcceptFocus"
-			Visible=true
-			Group="Behavior"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="AcceptTabs"
-			Visible=true
-			Group="Behavior"
-			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="AutoDeactivate"
+			Name="AllowAutoDeactivate"
 			Visible=true
 			Group="Appearance"
 			InitialValue="True"
 			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Tooltip"
+			Visible=true
+			Group="Appearance"
+			InitialValue=""
+			Type="String"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="AllowFocusRing"
+			Visible=true
+			Group="Appearance"
+			InitialValue="True"
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="AllowFocus"
+			Visible=true
+			Group="Behavior"
+			InitialValue="False"
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="AllowTabs"
+			Visible=true
+			Group="Behavior"
+			InitialValue="False"
+			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Backdrop"
 			Visible=true
 			Group="Appearance"
+			InitialValue=""
 			Type="Picture"
-			EditorType="Picture"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="DockAfter"
@@ -1138,6 +1160,7 @@ Inherits Canvas
 			Group="Behavior"
 			InitialValue="True"
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="DockAfterSize"
@@ -1145,6 +1168,7 @@ Inherits Canvas
 			Group="Behavior"
 			InitialValue="40"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="DockBefore"
@@ -1152,6 +1176,7 @@ Inherits Canvas
 			Group="Behavior"
 			InitialValue="True"
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="DockBeforeSize"
@@ -1159,13 +1184,7 @@ Inherits Canvas
 			Group="Behavior"
 			InitialValue="40"
 			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="DoubleBuffer"
-			Visible=true
-			Group="Behavior"
-			InitialValue="True"
-			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="DoubleClickAction"
@@ -1186,6 +1205,7 @@ Inherits Canvas
 			Group="Appearance"
 			InitialValue="False"
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Enabled"
@@ -1193,13 +1213,7 @@ Inherits Canvas
 			Group="Appearance"
 			InitialValue="True"
 			Type="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="EraseBackground"
-			Visible=true
-			Group="Behavior"
-			InitialValue="True"
-			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="HandlesColor"
@@ -1207,6 +1221,7 @@ Inherits Canvas
 			Group="Appearance"
 			InitialValue="&c00000000"
 			Type="Color"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="HasBackColor"
@@ -1214,6 +1229,7 @@ Inherits Canvas
 			Group="Appearance"
 			InitialValue="False"
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Height"
@@ -1221,35 +1237,29 @@ Inherits Canvas
 			Group="Position"
 			InitialValue="200"
 			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="HelpTag"
-			Visible=true
-			Group="Appearance"
-			Type="String"
-			EditorType="MultiLineEditor"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Index"
 			Visible=true
 			Group="ID"
+			InitialValue=""
 			Type="Integer"
-			EditorType="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="InitialParent"
-			Group="Initial State"
-			Type="String"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="IsDocked"
+			Visible=false
 			Group="Behavior"
 			InitialValue="False"
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="IsDockedPosition"
+			Visible=false
 			Group="Behavior"
+			InitialValue=""
 			Type="imSplitterIs"
 			EditorType="Enum"
 			#tag EnumValues
@@ -1262,31 +1272,41 @@ Inherits Canvas
 			Name="Left"
 			Visible=true
 			Group="Position"
+			InitialValue=""
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="LockBottom"
 			Visible=true
 			Group="Position"
+			InitialValue=""
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="LockLeft"
 			Visible=true
 			Group="Position"
+			InitialValue=""
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="LockRight"
 			Visible=true
 			Group="Position"
+			InitialValue=""
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="LockTop"
 			Visible=true
 			Group="Position"
+			InitialValue=""
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="MinAfterArea"
@@ -1294,6 +1314,7 @@ Inherits Canvas
 			Group="Position"
 			InitialValue="20"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="MinBeforeArea"
@@ -1301,18 +1322,23 @@ Inherits Canvas
 			Group="Position"
 			InitialValue="30"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Name"
 			Visible=true
 			Group="ID"
+			InitialValue=""
 			Type="String"
-			EditorType="String"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="PositionBeforeDock"
+			Visible=false
 			Group="Behavior"
+			InitialValue=""
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="SplitterColor"
@@ -1320,13 +1346,15 @@ Inherits Canvas
 			Group="Appearance"
 			InitialValue="&c000000"
 			Type="Color"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Super"
 			Visible=true
 			Group="ID"
+			InitialValue=""
 			Type="String"
-			EditorType="String"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="TabIndex"
@@ -1334,12 +1362,15 @@ Inherits Canvas
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="TabPanelIndex"
+			Visible=false
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="TabStop"
@@ -1347,12 +1378,15 @@ Inherits Canvas
 			Group="Position"
 			InitialValue="True"
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Top"
 			Visible=true
 			Group="Position"
+			InitialValue=""
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Transparent"
@@ -1360,13 +1394,7 @@ Inherits Canvas
 			Group="Behavior"
 			InitialValue="True"
 			Type="Boolean"
-			EditorType="Boolean"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="UseFocusRing"
-			Group="Appearance"
-			InitialValue="False"
-			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Visible"
@@ -1374,6 +1402,7 @@ Inherits Canvas
 			Group="Appearance"
 			InitialValue="True"
 			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Width"
@@ -1381,6 +1410,7 @@ Inherits Canvas
 			Group="Position"
 			InitialValue="10"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
