@@ -1,7 +1,7 @@
 #tag Class
 Protected Class imSplitter
 Inherits DesktopCanvas
-	#tag CompatibilityFlags = TargetHasGUI
+	#tag CompatibilityFlags = API2Only and ( (TargetDesktop and (Target64Bit)) )
 	#tag Event
 		Sub DoublePressed(x As Integer, y As Integer)
 		  If Me.IsDocked Then
@@ -43,6 +43,9 @@ Inherits DesktopCanvas
 
 	#tag Event
 		Sub MouseDrag(x As Integer, y As Integer)
+		  #Pragma Unused x
+		  #Pragma Unused y
+		  
 		  MoveSplitter
 		  'MouseDrag(X,Y)
 		End Sub
@@ -112,6 +115,8 @@ Inherits DesktopCanvas
 
 	#tag Event
 		Sub Paint(g As Graphics, areas() As Rect)
+		  #Pragma Unused areas
+		  
 		  If Me.HasBackColor Then
 		    g.ForeColor=Me.SplitterColor
 		    g.FillRect(0,0,Me.Width,Me.Height)
@@ -154,7 +159,7 @@ Inherits DesktopCanvas
 	#tag EndEvent
 
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		Sub AddControl(ctrl As DesktopContainer, beforeSplitter As Boolean)
 		  If beforeSplitter Then  // Left or above splitter
 		    CtrlArrayBefore.Add ctrl
@@ -164,7 +169,7 @@ Inherits DesktopCanvas
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		Sub AddControl(ctrl As DesktopUIControl, beforeSplitter As Boolean)
 		  // TODO: Check if the control is already there...
 		  
@@ -176,7 +181,7 @@ Inherits DesktopCanvas
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		Sub AddControlNoResize(ctrl As DesktopContainer, beforeSplitter As Boolean)
 		  If beforeSplitter Then  // Left or above splitter
 		    CtrlArrayBeforeNoResize.Add ctrl
@@ -186,7 +191,7 @@ Inherits DesktopCanvas
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		Sub AddControlNoResize(ctrl As DesktopUIControl, beforeSplitter As Boolean)
 		  // TODO: Check if the control is already there...
 		  
@@ -198,7 +203,7 @@ Inherits DesktopCanvas
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
+	#tag Method, Flags = &h21, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		Private Sub AdjustControlsAfter(dx As Integer, dy As Integer)
 		  // ***************************************************************
 		  // RESIZE CONTROLS and/or DesktopUIControls which are
@@ -239,7 +244,7 @@ Inherits DesktopCanvas
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
+	#tag Method, Flags = &h21, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		Private Sub AdjustControlsAfterNoResize(dx As Integer, dy As Integer)
 		  // ***************************************************************
 		  // REPOSITION CONTROLS and/or DesktopUIControls which are
@@ -275,7 +280,7 @@ Inherits DesktopCanvas
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
+	#tag Method, Flags = &h21, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		Private Sub AdjustControlsBefore(dx As Integer, dy As Integer)
 		  // ***************************************************************
 		  // RESIZE CONTROLS and/or DesktopUIControls which are
@@ -314,7 +319,7 @@ Inherits DesktopCanvas
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
+	#tag Method, Flags = &h21, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		Private Sub AdjustControlsBeforeNoResize(dx As Integer, dy As Integer)
 		  Dim i As Integer
 		  
@@ -349,7 +354,7 @@ Inherits DesktopCanvas
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		Sub Dock(before As Boolean)
 		  // Use this method to dock the Splitter from a code.
 		  // Parameters: before
@@ -433,7 +438,7 @@ Inherits DesktopCanvas
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		Sub MoveSplitter(MoveX As Integer = 0, MoveY As Integer = 0)
 		  // We can pass optional parameters MoveX and MoveY
 		  // to this method when we programaticaly want to move
@@ -551,7 +556,7 @@ Inherits DesktopCanvas
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		Sub RemoveControl(ctrl As DesktopContainer)
 		  Dim  ctrlFound As Boolean = False
 		  Dim  CtrlArray() As Object
@@ -561,17 +566,17 @@ Inherits DesktopCanvas
 		      If DesktopContainer(CtrlArrayAfter(i)) = DesktopContainer(ctrl) Then
 		        ctrlFound = True
 		      Else
-		        CtrlArray.Append Me.CtrlArrayAfter(i)
+		        CtrlArray.Add Me.CtrlArrayAfter(i)
 		      End If
-		    Else  // Append DesktopUIControls
-		      CtrlArray.Append Me.CtrlArrayAfter(i)
+		    Else  // Add DesktopUIControls
+		      CtrlArray.Add Me.CtrlArrayAfter(i)
 		    End If
 		  Next
 		  
 		  If ctrlFound Then  // Copy the remaining elements back to original array
 		    Redim CtrlArrayAfter(-1)
 		    For i As Integer = 0 To UBound(CtrlArray)
-		      CtrlArrayAfter.Append CtrlArray(i)
+		      CtrlArrayAfter.Add CtrlArray(i)
 		    Next
 		    
 		  Else
@@ -582,17 +587,17 @@ Inherits DesktopCanvas
 		        If DesktopContainer(CtrlArrayBefore(i)) = DesktopContainer(ctrl) Then
 		          ctrlFound = True
 		        Else
-		          CtrlArray.Append Me.CtrlArrayBefore(i)
+		          CtrlArray.Add Me.CtrlArrayBefore(i)
 		        End If
-		      Else  // Append DesktopUIControls
-		        CtrlArray.Append Me.CtrlArrayBefore(i)
+		      Else  // Add DesktopUIControls
+		        CtrlArray.Add Me.CtrlArrayBefore(i)
 		      End If
 		    Next
 		    
 		    If ctrlFound Then  // Copy the remaining elements back to original array
 		      Redim CtrlArrayBefore(-1)
 		      For i As Integer = 0 To UBound(CtrlArray)
-		        CtrlArrayBefore.Append CtrlArray(i)
+		        CtrlArrayBefore.Add CtrlArray(i)
 		      Next
 		    End If
 		    
@@ -600,7 +605,7 @@ Inherits DesktopCanvas
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		Sub RemoveControl(ctrl As DesktopUIControl)
 		  Dim  ctrlFound As Boolean = False
 		  Dim  CtrlArray() As Object
@@ -610,9 +615,9 @@ Inherits DesktopCanvas
 		      If DesktopUIControl(CtrlArrayAfter(i)) = ctrl Then
 		        ctrlFound = True
 		      Else
-		        CtrlArray.Append Me.CtrlArrayAfter(i)
+		        CtrlArray.Add Me.CtrlArrayAfter(i)
 		      End If
-		    Else  // Append DesktopContainer
+		    Else  // Add DesktopContainer
 		      CtrlArray.Append Me.CtrlArrayAfter(i)
 		    End If
 		  Next
@@ -620,7 +625,7 @@ Inherits DesktopCanvas
 		  If ctrlFound Then  // Copy the remaining elements back to original array
 		    Redim CtrlArrayAfter(-1)
 		    For i As Integer = 0 To UBound(CtrlArray)
-		      CtrlArrayAfter.Append CtrlArray(i)
+		      CtrlArrayAfter.Add CtrlArray(i)
 		    Next
 		    
 		  Else
@@ -631,17 +636,17 @@ Inherits DesktopCanvas
 		        If DesktopUIControl(CtrlArrayBefore(i)) = ctrl Then
 		          ctrlFound = True
 		        Else
-		          CtrlArray.Append Me.CtrlArrayBefore(i)
+		          CtrlArray.Add Me.CtrlArrayBefore(i)
 		        End If
-		      Else  // Append DesktopContainer
-		        CtrlArray.Append Me.CtrlArrayBefore(i)
+		      Else  // Add DesktopContainer
+		        CtrlArray.Add Me.CtrlArrayBefore(i)
 		      End If
 		    Next
 		    
 		    If ctrlFound Then  // Copy the remaining elements back to original array
 		      Redim CtrlArrayBefore(-1)
 		      For i As Integer = 0 To UBound(CtrlArray)
-		        CtrlArrayBefore.Append CtrlArray(i)
+		        CtrlArrayBefore.Add CtrlArray(i)
 		      Next
 		    End If
 		    
@@ -649,7 +654,7 @@ Inherits DesktopCanvas
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		Sub Undock()
 		  // Undock only if we are docked
 		  If Me.IsDocked Then
@@ -911,19 +916,19 @@ Inherits DesktopCanvas
 		Private CtrlArrayAfter() As Object
 	#tag EndProperty
 
-	#tag Property, Flags = &h21
+	#tag Property, Flags = &h21, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		Private CtrlArrayAfterNoResize() As Object
 	#tag EndProperty
 
-	#tag Property, Flags = &h21
+	#tag Property, Flags = &h21, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		Private CtrlArrayBefore() As Object
 	#tag EndProperty
 
-	#tag Property, Flags = &h21
+	#tag Property, Flags = &h21, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		Private CtrlArrayBeforeNoResize() As Object
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		#tag Note
 			Setting this property to true will make the WindowSplitter
 			dock after the splitter (dock to bottom or right
@@ -935,7 +940,7 @@ Inherits DesktopCanvas
 		DockAfter As Boolean = True
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		#tag Note
 			Setting this property will define where
 			docking bellow or after the splitter shall happen.
@@ -953,7 +958,7 @@ Inherits DesktopCanvas
 		DockAfterSize As Integer = 40
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		#tag Note
 			Setting this property to true will make the WindowSplitter
 			dock before the splitter (dock to top or left depending
@@ -966,7 +971,7 @@ Inherits DesktopCanvas
 		DockBefore As Boolean = True
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		#tag Note
 			Setting this property will define where docking
 			over or before the splitter shall happen
@@ -983,7 +988,7 @@ Inherits DesktopCanvas
 		DockBeforeSize As Integer = 40
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		#tag Note
 			0 None
 			1 DockBack
@@ -992,19 +997,19 @@ Inherits DesktopCanvas
 		DoubleClickAction As Integer = 0
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		DrawHandles As Boolean = False
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		HandlesColor As Color = &c00000000
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		HasBackColor As Boolean = False
 	#tag EndProperty
 
-	#tag ComputedProperty, Flags = &h0
+	#tag ComputedProperty, Flags = &h0, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		#tag Getter
 			Get
 			  // Use this property to query if the Splitter is docked.
@@ -1016,7 +1021,7 @@ Inherits DesktopCanvas
 		IsDocked As Boolean
 	#tag EndComputedProperty
 
-	#tag ComputedProperty, Flags = &h0
+	#tag ComputedProperty, Flags = &h0, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		#tag Getter
 			Get
 			  return mIsDockedPosition
@@ -1025,19 +1030,19 @@ Inherits DesktopCanvas
 		IsDockedPosition As imSplitterIs
 	#tag EndComputedProperty
 
-	#tag Property, Flags = &h21
+	#tag Property, Flags = &h21, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		Private IsHorizontalSplitter As Boolean = False
 	#tag EndProperty
 
-	#tag Property, Flags = &h21
+	#tag Property, Flags = &h21, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		Private lastX As Integer
 	#tag EndProperty
 
-	#tag Property, Flags = &h21
+	#tag Property, Flags = &h21, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		Private lastY As Integer
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		#tag Note
 			This property is used to specify the minimum size
 			of the view that comes after the WindowSplitter.
@@ -1045,7 +1050,7 @@ Inherits DesktopCanvas
 		MinAfterArea As Integer = 0
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
+	#tag Property, Flags = &h0, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		#tag Note
 			This property is used to specify the minimum size
 			of the view that comes before the WindowSplitter.
@@ -1053,15 +1058,15 @@ Inherits DesktopCanvas
 		MinBeforeArea As Integer = 0
 	#tag EndProperty
 
-	#tag Property, Flags = &h21
+	#tag Property, Flags = &h21, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		Private mIsDocked As Boolean = False
 	#tag EndProperty
 
-	#tag Property, Flags = &h21
+	#tag Property, Flags = &h21, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		Private mIsDockedPosition As imSplitterIs
 	#tag EndProperty
 
-	#tag Property, Flags = &h21
+	#tag Property, Flags = &h21, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		Private mPositionBeforeDock As Integer = 100
 	#tag EndProperty
 
@@ -1083,7 +1088,7 @@ Inherits DesktopCanvas
 		PositionBeforeDock As Integer
 	#tag EndComputedProperty
 
-	#tag ComputedProperty, Flags = &h0
+	#tag ComputedProperty, Flags = &h0, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		#tag Getter
 			Get
 			  return mSplitterColor
@@ -1098,7 +1103,7 @@ Inherits DesktopCanvas
 	#tag EndComputedProperty
 
 
-	#tag Enum, Name = imSplitterIs, Type = Integer, Flags = &h0
+	#tag Enum, Name = imSplitterIs, Type = Integer, Flags = &h0, CompatibilityFlags = API2Only and ( (TargetConsole and (Target64Bit)) or  (TargetWeb and (Target64Bit)) or  (TargetDesktop and (Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit)) )
 		DockedBefore
 		  DockedAfter
 		UnDocked
